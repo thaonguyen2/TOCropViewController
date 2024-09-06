@@ -54,7 +54,7 @@
 
 - (void)setup {
     self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
-    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.12f alpha:1.0f];
+    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
     [self addSubview:self.backgroundView];
     
     // On iOS 9, we can use the new layout features to determine whether we're in an 'Arabic' style language mode
@@ -178,7 +178,7 @@
 #endif
     
     if (verticalLayout == NO) {
-        CGFloat insetPadding = 10.0f;
+        CGFloat insetPadding = 40.0f;
         
         // Work out the cancel button frame
         CGRect frame = CGRectZero;
@@ -215,7 +215,8 @@
         else {
             width = CGRectGetMinX((_showOnlyIcons ? self.cancelIconButton : self.cancelTextButton).frame) - CGRectGetMaxX((_showOnlyIcons ? self.doneIconButton : self.doneTextButton).frame);
         }
-        
+        self.rotateClockwiseButton.frame = frame;
+
         CGRect containerRect = CGRectIntegral((CGRect){x,frame.origin.y,width,44.0f});
 
 #if TOCROPTOOLBAR_DEBUG_SHOWING_BUTTONS_CONTAINER_RECT
@@ -226,7 +227,7 @@
         
         NSMutableArray *buttonsInOrderHorizontally = [NSMutableArray new];
         if (!self.rotateCounterclockwiseButtonHidden) {
-            [buttonsInOrderHorizontally addObject:self.rotateCounterclockwiseButton];
+//            [buttonsInOrderHorizontally addObject:self.rotateCounterclockwiseButton];
         }
         
         if (!self.resetButtonHidden) {
@@ -237,9 +238,9 @@
             [buttonsInOrderHorizontally addObject:self.clampButton];
         }
         
-        if (!self.rotateClockwiseButtonHidden) {
-            [buttonsInOrderHorizontally addObject:self.rotateClockwiseButton];
-        }
+//        if (!self.rotateClockwiseButtonHidden) {
+            [buttonsInOrderHorizontally addObject:self.doneIconButton];
+//        }
         [self layoutToolbarButtons:buttonsInOrderHorizontally withSameButtonSize:buttonSize inContainerRect:containerRect horizontally:YES];
     }
     else {
@@ -461,6 +462,8 @@
 #pragma mark - Image Generation -
 + (UIImage *)doneImage
 {
+    return [UIImage imageNamed:@"ic_crop_done"];
+
     if (@available(iOS 13.0, *)) {
         return [UIImage systemImageNamed:@"checkmark"
                        withConfiguration:[UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightSemibold]];
@@ -482,6 +485,8 @@
 
 + (UIImage *)cancelImage
 {
+    return [UIImage imageNamed:@"ic_crop_cancel"];
+    
     if (@available(iOS 13.0, *)) {
         return [UIImage systemImageNamed:@"xmark"
                        withConfiguration:[UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightSemibold]];
@@ -543,6 +548,8 @@
 
 + (UIImage *)rotateCWImage
 {
+    return [UIImage imageNamed:@"ic_crop_rotation"];
+    
     if (@available(iOS 13.0, *)) {
         return [[UIImage systemImageNamed:@"rotate.right.fill"
                         withConfiguration:[UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightSemibold]]
